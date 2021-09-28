@@ -6,19 +6,25 @@
 
 enum class Tag
 {
-	// logical operators
+	// Data Types
+	INT, // for integers
+	FLOAT, // for decimals
+	BOOL, // for booleans
+	STR, // for string characters
+
+	// Logical operators
 	AND, // && logical and
 	OR, // || logical or
+
+	// Relational operators
 	EQ, // == equal
 	NE, // != not equal
-
-	// comparison operators
 	LE, // < less than
 	LEQ, // <= less or equal 
 	GE, // > greater than
 	GEQ, // >= greater or equal 
 
-	// aritmetic operators
+	// Aritmetic operators
 	PLUS, // + plus
 	MINUS, // - minus
 	MULT, // * multiplication and scalar product
@@ -44,18 +50,23 @@ enum class Tag
 	FUNCTION,
 	RETURN,
 	ENDFUNCTION,
-	TRUE,
-	FALSE,
+	TRUE, // true
+	FALSE, // false
 	//  general token for identifiers
 	IDENTIFIER,
 	// general token for numbers
-	NUMBER, // integral numbers
+	NUM, // integral numbers
 	REAL, // real numbers
 	// general token for strings
-	STRING,
-	// token for unknown lexemes
-	UNKNOWN,
-	E_O_F // end of file token
+	STRING, // "some_string"
+	
+	E_O_F, // end of file token
+
+	// tokens for unknown lexemes
+	UNKNOWN, // this token is for unknown characters
+	UNKNOWN_NUMBER, // this token is for UNKNOWN (Error) number lexemes
+	UNKNOWN_OPERATOR, // this token is for UNKNOWN operators, e.g. only "&" or "|" or "!"
+	UNKNOWN_STRING // this token is for UNKNOWN (Error) strings, e.g "abc$ (where $ means EOF)
 };
 
 class Token

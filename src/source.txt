@@ -1,3 +1,7 @@
-if (123.0 <= 500)
-	a = 7;
+
+
+
+string aba = "hola como estas";
+if (56.<&=45.p)
+	a=89;
 endif

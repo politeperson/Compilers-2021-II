@@ -19,6 +19,10 @@ public:
 	bool eof_src_code();
 
 	Token explore();
+
+	void analyze_src_code();
+
+
 	~LexicalAnalyzer();
 
 private:
@@ -34,7 +38,12 @@ private:
 	std::ifstream src_code_; // here will be the source code
 
 	Token explore_operator(char c);
+	Token explore_number(char c);
+	Token explore_identifier(char c);
+	Token explore_string(char c);
+
 	char jump_unnecesary_characters();
+
 };
 
 
