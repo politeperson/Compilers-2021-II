@@ -21,26 +21,7 @@ LexicalAnalyzer::LexicalAnalyzer(const std::string& entry_path_src_code)
 	src_code_.seekg(0, src_code_.beg); // returning to beginning
 	file_pos_ = src_code_.tellg(); // 0
 
-	// reserving reserved words
-	reserve(Token(Tag::IF, "if"));
-	reserve(Token(Tag::ENDIF, "endif"));
-	reserve(Token(Tag::ELSE, "else"));
-	reserve(Token(Tag::WHILE, "while"));
-	reserve(Token(Tag::ENDWHILE, "endwhile"));
-	reserve(Token(Tag::ENDFOR, "for"));
-	reserve(Token(Tag::ENDFOR, "endfor"));
-	reserve(Token(Tag::FUNCTION, "function"));
-	reserve(Token(Tag::RETURN, "return"));
-	reserve(Token(Tag::ENDFUNCTION, "endfunction"));
-	// booleans lexemes
-	reserve(SPTokens::instance().get_True()); // true
-	reserve(SPTokens::instance().get_False()); // false
-	// data types
-	reserve(Token(Tag::INT, "int"));
-	reserve(Token(Tag::FLOAT, "float"));
-	reserve(Token(Tag::BOOL, "bool"));
-	reserve(Token(Tag::STR, "string"));
-
+	reserve_initial_words();
 }
 
 // DESTRUCTOR
@@ -136,7 +117,7 @@ Token LexicalAnalyzer::explore()
 		if (auxiliar_token.get_token_tag() != Tag::UNKNOWN) return auxiliar_token;
 
 		if (eof_src_code() && c == '\n')
-			return Token(Tag::E_O_F, "");
+			return SPTokens::instance().get_eof();
 		// if it isn't any known lexeme, then return an unknown token
 		return Token(Tag::UNKNOWN, std::string({ c }), line_);
 	}
@@ -148,15 +129,62 @@ Token LexicalAnalyzer::explore()
 	}
 }
 
-void LexicalAnalyzer::analyze_src_code()
+// prints the tokens of lexical analysis
+// show lexical errors
+// return the input for our grammar
+std::string LexicalAnalyzer::analyze_src_code()
 {
+	// first we must reserve initial reserved words
+	reserve_initial_words();
+	
+	// restarting position
+	src_code_.seekg(0, src_code_.end); // going to the end of the file
+	src_code_length_ = src_code_.tellg(); // getting length of the source code
+	src_code_.seekg(0, src_code_.beg); // returning to beginning
+	file_pos_ = src_code_.tellg(); // 0
+	line_ = 1; // restart line
+
 	Tag tok = Tag::UNKNOWN;
+	int tmp_line_ = line_;
+
+	std::vector<Token> lexical_errors;
+	std::string input_for_grammar = "";
+
 	while (tok != Tag::E_O_F)
 	{
 		Token tmp = explore();
-		std::cout << tmp << std::endl;
+		tok = tmp.get_token_tag();
+		if(tmp.get_line() == 0) tmp.set_line(line_); // set current line, only for print purposes
+		
+		if(tmp_line_ != line_)
+		{
+			std::cout << "\n";
+			tmp_line_ = line_;
+		}
+
+		if(tok == Tag::E_O_F)
+			break;
+
+		if(tok == Tag::UNKNOWN || tok == Tag::UNKNOWN_NUMBER || tok == Tag::UNKNOWN_OPERATOR || tok == Tag::UNKNOWN_STRING)
+			lexical_errors.push_back(tmp);
+		else
+		{
+			std::cout << tmp << " ";
+			input_for_grammar += tmp.get_token_tag_as_str(Token::TYPE_ANALYSIS::SINTACTIC) + ",";
+		}
+
 		tok = tmp.get_token_tag();
 	}
+	std::cout << "\n";
+	if (!lexical_errors.empty())
+	{
+		std::cout << "Some errors were found:\n";
+		for(auto& error : lexical_errors)
+			std::cout <<"See line: " << error.get_line() << " , " << error << std::endl;
+	}
+	std::cout << "\n";
+	input_for_grammar.pop_back();
+	return input_for_grammar;
 }
 
 // PRIVATE METHODS
@@ -179,12 +207,12 @@ Token LexicalAnalyzer::explore_operator(char c)
 	case '=': {
 		if (!eof_src_code()) aux_c = peekcharacter();
 		if (aux_c == '=') { getcharacter(); return SPTokens::instance().get_eq(); }
-		else return SPTokens::instance().get_assign();
+		else return SPTokens::instance().get_assign(); // = assignation
 	}
 	case '!': {
 		if (!eof_src_code()) aux_c = peekcharacter();
 		if (aux_c == '=') { getcharacter();  return SPTokens::instance().get_ne(); }
-		else return Token(Tag::UNKNOWN_OPERATOR, "!", line_);
+		else return SPTokens::instance().get_neg(); // ! logical negation
 	}
 	case '<': {
 		if (!eof_src_code()) aux_c = peekcharacter();
@@ -211,6 +239,10 @@ Token LexicalAnalyzer::explore_operator(char c)
 		return SPTokens::instance().get_lpar(); // left parenthesis
 	case ')':
 		return SPTokens::instance().get_rpar(); // right parenthesis
+	case '{':
+		return SPTokens::instance().get_left_bracket(); // left bracket
+	case '}':
+		return SPTokens::instance().get_right_bracket(); // left bracket
 	case ',':
 		return SPTokens::instance().get_comma(); // comma
 	case ';':
@@ -319,7 +351,7 @@ Token LexicalAnalyzer::explore_string(char c)
 		// we reached EOF and string is not finished 
 		if (c != '\"') return Token(Tag::UNKNOWN_STRING, str, line_);
 		
-		Token new_str(Tag::STRING, str + c, line_);
+		Token new_str(Tag::STR, str + c, line_);
 		reserve(new_str); // reserve the string
 		return new_str;
 	}
@@ -334,7 +366,7 @@ char LexicalAnalyzer::jump_unnecesary_characters()
 		c = getcharacter();
 		if (c == '\t' || c == ' ' || c == '\r') continue;
 		else if (c == '!') {
-			if (eof_src_code()) return c; // return an unknown "!" lexeme
+			if (eof_src_code()) return c; // return a logical negation "!" lexeme
 			if (peekcharacter() == '!') { // reading comentary
 				while (!eof_src_code() && getcharacter() != '\n');
 				line_++;
@@ -346,4 +378,29 @@ char LexicalAnalyzer::jump_unnecesary_characters()
 		else break;
 	}
 	return c; // you return c, because isn't an unnecesary character
+}
+
+void LexicalAnalyzer::reserve_initial_words()
+{
+	words_table_.clear();
+	// reserving reserved words
+	reserve(Token(Tag::MAIN, "main"));
+	reserve(Token(Tag::IF, "if"));
+	reserve(Token(Tag::ENDIF, "endif"));
+	reserve(Token(Tag::ELSE, "else"));
+	reserve(Token(Tag::WHILE, "while"));
+	reserve(Token(Tag::ENDWHILE, "endwhile"));
+	reserve(Token(Tag::ENDFOR, "for"));
+	reserve(Token(Tag::ENDFOR, "endfor"));
+	reserve(Token(Tag::FUNCTION, "function"));
+	reserve(Token(Tag::RETURN, "return"));
+	reserve(Token(Tag::ENDFUNCTION, "endfunction"));
+	// booleans lexemes
+	reserve(SPTokens::instance().get_True()); // true
+	reserve(SPTokens::instance().get_False()); // false
+	// data types
+	reserve(Token(Tag::INT, "int"));
+	reserve(Token(Tag::FLOAT, "float"));
+	reserve(Token(Tag::BOOL, "bool"));
+	reserve(Token(Tag::STRING, "string"));
 }

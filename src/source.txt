@@ -1,7 +1,11 @@
+!! hola soy un comentario
+main {
+	string aba = "hola como estas";
+	int entero = 45 + 45;
+
+	int enteroNoValue;
+	enteroNoValue = 45 + 89 * (26 - 12);
 
 
+}
 
-string aba = "hola como estas";
-if (56.<&=45.p)
-	a=89;
-endif
