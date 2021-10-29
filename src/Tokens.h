@@ -1,4 +1,3 @@
-#pragma once
 #ifndef TOKENS_H_
 #define TOKENS_H_
 #include <iostream>
@@ -6,15 +5,18 @@
 
 enum class Tag
 {
+	// starting main
+	MAIN,
 	// Data Types
 	INT, // for integers
 	FLOAT, // for decimals
 	BOOL, // for booleans
-	STR, // for string characters
+	STRING, // for string datatypes
 
 	// Logical operators
 	AND, // && logical and
 	OR, // || logical or
+	NEG, // ! logical negation
 
 	// Relational operators
 	EQ, // == equal
@@ -38,6 +40,8 @@ enum class Tag
 	RPAR, // ) right parethesis
 	COMMA, // , comma
 	DOTCOMMA, // ; dot and comma
+	LBRACKET, // { left bracket
+	RBRACKET, // } right bracket
 
 	// individual tokens for reserved words
 	IF,
@@ -58,7 +62,7 @@ enum class Tag
 	NUM, // integral numbers
 	REAL, // real numbers
 	// general token for strings
-	STRING, // "some_string"
+	STR, // "some_string"
 	
 	E_O_F, // end of file token
 
@@ -75,13 +79,13 @@ private:
 	Tag token_tag_;
 	std::string lexeme_;
 	int line_; // line where it is located the token
-
 public:
+	enum class TYPE_ANALYSIS {LEXICAL, SINTACTIC};
 	Token();
 	Token(Tag entry_token_tag, const std::string& entry_lexeme, int entry_line = 0);
 	// getters
 	Tag get_token_tag() const;
-	std::string get_token_tag_as_str() const;
+	std::string get_token_tag_as_str(TYPE_ANALYSIS type_analysis) const;
 	std::string get_lexeme() const;
 	int get_line() const;
 
@@ -112,15 +116,22 @@ public:
 		static SPTokens* instance = new SPTokens();
 		return *instance;
 	}
-	const Token get_and() { 
-		static Token and(Tag::AND, "&&");
-		return and; 
+
+	const Token get_and() {
+		const Token and_symbol(Tag::AND, "&&");
+		return and_symbol;
 	}
 
 	const Token get_or() {
-		static Token or (Tag::OR, "||");
-		return or;
+		static Token or_symbol(Tag::OR, "||");
+		return or_symbol;
 	}
+
+	const Token get_neg() {
+		static Token neg_symbol(Tag::NEG, "!");
+		return neg_symbol;
+	}
+	
 	
 	const Token get_eq() {
 		static Token eq (Tag::EQ, "==");
@@ -197,6 +208,16 @@ public:
 		return dotcomma;
 	}
 
+	const Token get_left_bracket() {
+		static Token left_bracket(Tag::LBRACKET, "{");
+		return left_bracket;
+	}
+
+	const Token get_right_bracket() {
+		static Token right_bracket(Tag::RBRACKET, "}");
+		return right_bracket;
+	}
+
 	const Token get_True() {
 		static Token True(Tag::TRUE, "true");
 		return True;
@@ -208,14 +229,13 @@ public:
 	}
 
 	const Token get_eof() {
-		static Token E_O_F(Tag::E_O_F, "" + '\0');
+		static Token E_O_F(Tag::E_O_F, "$" + '\0');
 		return E_O_F;
 	}
 	
 private:
 	SPTokens() {}
-	~SPTokens()
-	{}
+	~SPTokens() {}
 };
 
 

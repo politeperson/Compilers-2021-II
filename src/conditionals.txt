@@ -1,0 +1,14 @@
+main {
+    !! correcta implementación
+    bool flag = true;
+    int h = 0;
+    if (flag)
+        h = h + (5 * 5);
+    endif
+    !! reemplaza 'flag' por '*' para generar un error sintáctico
+    if(*)
+        h = h * 2;
+    else
+        h = h / 2;
+    endif
+}

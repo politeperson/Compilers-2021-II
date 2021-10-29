@@ -1,16 +1,8 @@
-bool gg = true;
-bool kk = gg && false;
-bool pp1 = true && (false || true);
-bool pp2 = true && (5<6);
-
-int a = 89;
-int b = 789 + 789;
-int c = 2 * 456;
-
-!! comentario
-
-float y = 98.0;
-float u = 546.2;
-float kkkkkkk23 = 789.65;
-
-
+main {
+    !! comentario
+    string hola = "hola";
+    bool gg = true || false;
+    int entero = 45 * (25 + 25); 
+    float flotante = 123.789;
+    % !! lexical error
+}

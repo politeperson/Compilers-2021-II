@@ -22,109 +22,119 @@ Tag Token::get_token_tag() const
 	return token_tag_;
 }
 
-std::string Token::get_token_tag_as_str() const
+std::string Token::get_token_tag_as_str(Token::TYPE_ANALYSIS type_analysis) const
 {
 	switch (token_tag_)
 	{
+		// main clause
+	case Tag::MAIN:
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "MAIN" : "main";
 		// Data Types
 	case Tag::INT:
-		return std::string("INT");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "INT" : "int";
 	case Tag::FLOAT:
-		return std::string("FLOAT");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "FLOAT" : "float";
 	case Tag::BOOL:
-		return std::string("BOOL");
-	case Tag::STR:
-		return std::string("STR");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "BOOL" : "bool";
+	case Tag::STRING:
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "STRING" : "string";
 		// Logical Operators
 	case Tag::AND:
-		return std::string("AND");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "AND" : "and";
 	case Tag::OR:
-		return std::string("OR");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "OR" : "or";
+	case Tag::NEG:
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "NEG" : "!";
 		// Relational Operators
 	case Tag::EQ:
-		return std::string("EQ");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "EQ" : "eq";
 	case Tag::NE:
-		return std::string("NEQ");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "NEQ" : "neq";
 	case Tag::LE:
-		return std::string("LE");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "LE" : "le";
 	case Tag::LEQ:
-		return std::string("LEQ");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "LEQ" : "leq";
 	case Tag::GE:
-		return std::string("GE");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "GE" : "ge";
 	case Tag::GEQ:
-		return std::string("GEQ");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "GEQ" : "geq";
 		// Arithmetic Operators
 	case Tag::PLUS:
-		return std::string("PLUS");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "PLUS" : "+";
 	case Tag::MINUS:
-		return std::string("MINUS");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "MINUS" : "-";
 	case Tag::MULT:
-		return std::string("MULT");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "MULT" : "*";
 	case Tag::DIV:
-		return std::string("DIV");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "DIV" : "/";
 		// For assignation
 	case Tag::ASSIGN:
-		return std::string("ASSIGN");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "ASSIGN" : "=";
 		// Delimiters
 	case Tag::LPAR:
-		return std::string("LPAR");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "LPAR" : "(";
 	case Tag::RPAR:
-		return std::string("RPAR");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "RPAR" : ")";
+	case Tag::LBRACKET:
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "LBRACKET" : "{";
+	case Tag::RBRACKET:
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "RBRACKET" : "}";
 	case Tag::COMMA:
-		return std::string("COMMA");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "COMMA" : ",";
 	case Tag::DOTCOMMA:
-		return std::string("DOTCOMMA");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "DOTCOMMA" : ";";
 		// Reserved words
 	case Tag::IF:
-		return std::string("IF");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "IF" : "if";
 	case Tag::ENDIF:
-		return std::string("ENDIF");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "ENDIF" : "endif";
 	case Tag::ELSE:
-		return std::string("ELSE");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "ELSE" : "else";
 	case Tag::WHILE:
-		return std::string("WHILE");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "WHILE" : "while";
 	case Tag::ENDWHILE:
-		return std::string("ENDWHILE");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "ENDWHILE" : "endwhile";
 	case Tag::FOR:
-		return std::string("FOR");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "FOR" : "for";
 	case Tag::ENDFOR:
-		return std::string("ENDFOR");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "ENDFOR" : "endfor";
 	case Tag::FUNCTION:
-		return std::string("FUNCTION");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "FUNCTION" : "function";
 	case Tag::RETURN:
-		return std::string("FUNCTION");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "RETURN" : "return";
 	case Tag::ENDFUNCTION:
-		return std::string("ENDFUNCTION");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "ENDFUNCTION" : "endfunction";
 	case Tag::TRUE:
-		return std::string("TRUE");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "TRUE" : "true";
 	case Tag::FALSE:
-		return std::string("FALSE");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "FALSE" : "false";
 		// Identifiers
 	case Tag::IDENTIFIER:
-		return std::string("IDENTIFIER");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "IDENTIFIER" : "id";
 		// Numbers
 	case Tag::NUM:
-		return std::string("NUMBER");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "NUMBER" : "num";
 	case Tag::REAL:
-		return std::string("REAL");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "REAL" : "real";
 		// Strings of characters
-	case Tag::STRING:
-		return std::string("STRING");
+	case Tag::STR:
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "STR" : "str";
 		// End of File
 	case Tag::E_O_F:
-		return std::string("EOF");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "EOF" : "$";
 		// Unknown tokens
 	case Tag::UNKNOWN:
-		return std::string("UNKNOWN");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "UNKNOWN" : "unknown";
 	case Tag::UNKNOWN_NUMBER:
-		return std::string("UNKNOWN_NUMBER");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "UNKNOWN_NUMBER" : "unknown_num";
 	case Tag::UNKNOWN_OPERATOR:
-		return std::string("UNKNOWN_OPERATOR");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "UNKNOWN_OPERATOR" : "unknown_op";
 	case Tag::UNKNOWN_STRING:
-		return std::string("UNKNOWN_STRING");
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "UNKNOWN_STRING" : "unknown_str";
 	}
-	return std::string(""); // thoreticaly we do not reach this part of the code
+	return std::string(""); // in theory we do not reach this part of the code
 }
+
 
 std::string Token::get_lexeme() const
 {
@@ -161,9 +171,9 @@ std::ostream& operator<<(std::ostream& os, const Token& tok)
 {
 	if (!tok.line_) // line 0 doesn't exist 
 	{
-		os << "<" << tok.get_token_tag_as_str() << "," << tok.get_lexeme() << ">";
+		os << "[" << tok.get_token_tag_as_str(Token::TYPE_ANALYSIS::LEXICAL) << "," << tok.get_lexeme() << "]";
 		return os;
 	}
-	os << "<" << tok.get_token_tag_as_str() << "," << tok.get_lexeme() << "," << tok.get_line() << ">";
+	os << "[" << tok.get_token_tag_as_str(Token::TYPE_ANALYSIS::LEXICAL) << "," << tok.get_lexeme() << "," << tok.get_line() << "]";
 	return os;
 }

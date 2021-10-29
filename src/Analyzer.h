@@ -1,4 +1,3 @@
-#pragma once
 #ifndef ANALYZER_H_
 #define ANALYZER_H_
 #include <map>
@@ -20,7 +19,7 @@ public:
 
 	Token explore();
 
-	void analyze_src_code();
+	std::string analyze_src_code();
 
 
 	~LexicalAnalyzer();
@@ -37,6 +36,7 @@ private:
 	std::string path_src_code_; // the path of the source code
 	std::ifstream src_code_; // here will be the source code
 
+	void reserve_initial_words();
 	Token explore_operator(char c);
 	Token explore_number(char c);
 	Token explore_identifier(char c);
