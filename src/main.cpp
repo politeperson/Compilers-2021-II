@@ -12,7 +12,6 @@
 // Own Libraries
 #include "Tokens.h"
 #include "Analyzer.h"
-
 void start_parsing(std::string input, std::string filename_no_ext)
 {
     std::string input_str = "\"" + input + "\"";
