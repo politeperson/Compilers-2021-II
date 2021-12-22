@@ -5,6 +5,7 @@
 #include <list>
 #include <vector>
 #include <fstream>
+#include <iostream>
 
 #include "Tokens.h"
 

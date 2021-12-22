@@ -1,6 +1,5 @@
 #include "Analyzer.h"
 
-
 // PUBLIC METHODS
 // CONTRUCTOR
 LexicalAnalyzer::LexicalAnalyzer(const std::string& entry_path_src_code)
@@ -405,5 +404,4 @@ void LexicalAnalyzer::reserve_initial_words()
 	reserve(Token(Tag::FLOAT, "float"));
 	reserve(Token(Tag::BOOL, "bool"));
 	reserve(Token(Tag::STRING, "string"));
-
 }
