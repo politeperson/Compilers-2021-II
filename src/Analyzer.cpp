@@ -395,6 +395,8 @@ void LexicalAnalyzer::reserve_initial_words()
 	reserve(Token(Tag::FUNCTION, "function"));
 	reserve(Token(Tag::RETURN, "return"));
 	reserve(Token(Tag::ENDFUNCTION, "endfunction"));
+	reserve(Token(Tag::BREAK, "break"));
+	reserve(Token(Tag::PRINT, "print"));
 	// booleans lexemes
 	reserve(SPTokens::instance().get_True()); // true
 	reserve(SPTokens::instance().get_False()); // false
@@ -403,4 +405,5 @@ void LexicalAnalyzer::reserve_initial_words()
 	reserve(Token(Tag::FLOAT, "float"));
 	reserve(Token(Tag::BOOL, "bool"));
 	reserve(Token(Tag::STRING, "string"));
+
 }

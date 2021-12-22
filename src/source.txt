@@ -1,10 +1,11 @@
 !! hola soy un comentario
 main {
 	string aba = "hola como estas";
-	int entero = 45 + 45;
+	%
+	!!int entero = 45 + 45;
 
-	int enteroNoValue;
-	enteroNoValue = 45 + 89 * (26 - 12);
+	!!int enteroNoValue;
+	!!enteroNoValue = 45 + 89 * (26 - 12);
 
 
 }

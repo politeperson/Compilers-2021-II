@@ -54,6 +54,8 @@ enum class Tag
 	FUNCTION,
 	RETURN,
 	ENDFUNCTION,
+	BREAK, // para realizar breaks
+	PRINT, // para imprimir variables o expresiones
 	TRUE, // true
 	FALSE, // false
 	//  general token for identifiers

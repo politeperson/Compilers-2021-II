@@ -26,7 +26,7 @@ Program -> main Block .
 Block -> l_bracket Decls Stmts r_bracket .
 Decls -> Decls Decl
       | .
-Decl -> Type id assign Bool ; | Type id ; .
+Decl -> Type id ; .
 Type -> int
       | float
       | bool
@@ -34,7 +34,6 @@ Type -> int
 Stmts -> Stmts Stmt
       | .
 Stmt -> id assign Bool ;
-      | id ;
       | if ( Bool ) Stmt endif
       | if ( Bool ) Stmt else Stmt endif
       | while ( Bool ) Stmt endwhile
@@ -42,6 +41,7 @@ Stmt -> id assign Bool ;
       | for ( Decls ; Bool ; ) Stmt endfor
       | for ( Decls ; ; ) Stmt endfor
       | break ;
+      | print ( Bool ) ;
       | Block .
 Bool -> Bool or Join
      | Join .
@@ -71,17 +71,16 @@ Factor -> ( Bool )
        | false
        | str .
 
-LL(1) Grammar: format https://smlweb.cpsc.ucalgary.ca/
 
+
+
+LL(1) Grammar: format https://smlweb.cpsc.ucalgary.ca/
 Program -> main Block .
 Block -> l_bracket Decls Stmts r_bracket .
 Decls -> Decls_1 .
 Decls_1 -> Decl Decls_1 
           |.
-Decl -> Type FType .
-FType -> id Fid_1 .
-Fid_1 -> assign Bool ; 
-        |; .
+Decl -> Type id ; .
 Type -> int 
        |float 
        |bool 
@@ -89,14 +88,13 @@ Type -> int
 Stmts -> Stmts_1 .
 Stmts_1 -> Stmt Stmts_1 
           |.
-Stmt -> id Fid 
+Stmt -> id assign Bool ; 
        |if Fif 
        |while ( Bool ) Stmt endwhile 
        |for Ffor 
        |break ; 
+       |print ( Bool ) ;
        |Block .
-Fid -> assign Bool ; 
-      |; .
 Fif -> ( F( .
 F( -> Bool FBool .
 FBool -> ) F) .
@@ -188,14 +186,11 @@ Program -> main Block
 Block -> { Decls Stmts }
 Decls -> Decls_1
 Decls_1 -> Decl Decls_1 | ε
-Decl -> Type FType
-FType -> id Fid_1
-Fid_1 -> = Bool ; | ;
+Decl -> Type id ;
 Type -> int | float | bool | string
 Stmts -> Stmts_1
 Stmts_1 -> Stmt Stmts_1 | ε
-Stmt -> id Fid | if Fif | while ( Bool ) Stmt endwhile | for Ffor | break ; | Block
-Fid -> = Bool ; | ;
+Stmt -> id = Bool ; | if Fif | while ( Bool ) Stmt endwhile | for Ffor | break ; | print ( Bool ) ; | Block
 Fif -> ( F(
 F( -> Bool FBool
 FBool -> ) F)

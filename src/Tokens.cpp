@@ -104,6 +104,10 @@ std::string Token::get_token_tag_as_str(Token::TYPE_ANALYSIS type_analysis) cons
 		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "RETURN" : "return";
 	case Tag::ENDFUNCTION:
 		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "ENDFUNCTION" : "endfunction";
+	case Tag::BREAK:
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "BREAK" : "break";
+	case Tag::PRINT:
+		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "PRINT" : "print";
 	case Tag::TRUE:
 		return type_analysis == Token::TYPE_ANALYSIS::LEXICAL? "TRUE" : "true";
 	case Tag::FALSE:

@@ -1,8 +1,10 @@
 main {
     !! comentario
-    string hola = "hola";
-    bool gg = true || false;
-    int entero = 45 * (25 + 25); 
-    float flotante = 123.789;
-    % !! lexical error
+    ¡
+    string hola;
+    hola = "hola";
+    !!bool gg = true || false;
+    !!int entero = 45 * (25 + 25); 
+    !!float flotante = 123.789;
+    !! % !! lexical error
 }

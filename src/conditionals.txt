@@ -1,12 +1,17 @@
 main {
     !! correcta implementación
-    bool flag = true;
-    int h = 0;
-    if (flag)
+    bool flag;
+    int h;
+    flag = true;
+    h = 5;
+    if (flag) {
         h = h + (5 * 5);
+        break;
+        print(5);
+    }
     endif
     !! reemplaza 'flag' por '*' para generar un error sintáctico
-    if(*)
+    if(flag)
         h = h * 2;
     else
         h = h / 2;
